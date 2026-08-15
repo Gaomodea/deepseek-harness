@@ -132,7 +132,19 @@ export class BlockAssembler {
    *   its accumulated deltas (an unknown block type never closed by `block-end` throws).
    */
   blocks(): ContentBlock[] {
-    const blocks = this.order.map(index => this.assemble(this.mustGet(index), index))
+    const blocks: ContentBlock[] = this.order.map((index): ContentBlock => {
+      const block = this.assemble(this.mustGet(index), index)
+      // A provider may stream a degenerate tool call with an empty id or name.
+      // The id is the identity the scheduler uses to match its tool/result, and
+      // the session format requires a non-empty call id; the wire format
+      // requires a non-empty tool name (providers reject empty names with a 400
+      // on replay). Synthesize whichever is missing.
+      if (block.type !== 'tool-call') return block
+      const id = block.id.length > 0 ? block.id : CallId(`call-${index}`)
+      const name = block.name.length > 0 ? block.name : `tool-${index}`
+      if (id === block.id && name === block.name) return block
+      return { type: 'tool-call', id, name, arguments: block.arguments }
+    })
     return this.finish.kind === 'max-tokens'
       ? blocks.filter(block => block.type !== 'tool-call')
       : blocks
