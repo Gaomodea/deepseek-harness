@@ -100,13 +100,44 @@ describe('BlockAssembler', () => {
     expect(assembler.blocks()).toEqual([{ type: 'tool-call', id: CallId('c1'), name: 'echo', arguments: '{}' }])
   })
 
-  it('assembles tool-call with generated id fallback when no id provided', () => {
+  it('assembles tool-call with generated id and name fallbacks when neither is provided', () => {
     const assembler = new BlockAssembler()
     assembler.push({ type: 'tool-call-delta', index: 0, argumentsDelta: '{}' } as StreamChunk)
-    // No id and no name provided — uses fallback id `call-{index}` and empty name
+    // No id and no name provided — uses fallback id `call-{index}` and name `tool-{index}`
     const blocks = assembler.blocks()
     expect(blocks).toEqual([
-      { type: 'tool-call', id: CallId('call-0'), name: '', arguments: '{}' },
+      { type: 'tool-call', id: CallId('call-0'), name: 'tool-0', arguments: '{}' },
+    ])
+  })
+
+  it('replaces an empty-string tool-call id with a generated id fallback', () => {
+    const assembler = new BlockAssembler()
+    assembler.push({ type: 'tool-call-delta', index: 0, id: CallId(''), name: 'echo', argumentsDelta: '{}' })
+    // An empty id is treated like a missing id so the tool/result it seeds carries a valid call id.
+    const blocks = assembler.blocks()
+    expect(blocks).toEqual([
+      { type: 'tool-call', id: CallId('call-0'), name: 'echo', arguments: '{}' },
+    ])
+  })
+
+  it('replaces an empty-string id on a complete block-end tool-call', () => {
+    const assembler = new BlockAssembler()
+    assembler.push({
+      type: 'block-end', index: 0,
+      block: { type: 'tool-call', id: CallId(''), name: 'echo', arguments: '{}' },
+    })
+    expect(assembler.blocks()).toEqual([
+      { type: 'tool-call', id: CallId('call-0'), name: 'echo', arguments: '{}' },
+    ])
+  })
+
+  it('replaces an empty-string tool-call name so the call replays to providers', () => {
+    const assembler = new BlockAssembler()
+    assembler.push({ type: 'tool-call-delta', index: 0, id: CallId('c1'), name: '', argumentsDelta: '{}' })
+    // A provider rejects an empty tool name with a 400 on replay, so synthesize one.
+    const blocks = assembler.blocks()
+    expect(blocks).toEqual([
+      { type: 'tool-call', id: CallId('c1'), name: 'tool-0', arguments: '{}' },
     ])
   })
 
