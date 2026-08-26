@@ -1,0 +1,16 @@
+{
+  // 纯类型检查用的本地调试工程（examples 非 build target，不会被 host 引用构建）。
+  // 继承 base 拿到 strict / types:["node"] 等约定，但把 base 的 `paths`（@deepseek-ai/*
+  // → src 的源码映射）置空：vendored cordis 等源码不是按 repo 的
+  // noUncheckedIndexedAccess / exactOptionalPropertyTypes / noImplicitOverride 写的，若
+  // 走 paths 拉进本工程会被过严复检。改走 node_modules 的 built 声明（lib/types/*.d.ts），
+  // 配 skipLibCheck 消费即可。
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "paths": {},
+    "composite": false,
+    "noEmit": true,
+    "outDir": null
+  },
+  "include": ["./**/*.ts"]
+}

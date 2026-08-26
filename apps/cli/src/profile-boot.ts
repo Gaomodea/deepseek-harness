@@ -243,6 +243,7 @@ export async function runProfile(options: RunProfileOptions): Promise<{ ctx: Con
     ...loadOptionalPatches(NAME, homePatchPath()) ?? [],
     ...composed.overlays,
   ])
+  console.log(rootConfig)
   // Cloned for the same insert-aliasing reason as composeLive: the boot
   // application must not mutate the objects later reloads recompose from.
   const ctx = await boot(NAME, rootConfig, structuredClone(allPatches(composed)), (hostCtx) => {

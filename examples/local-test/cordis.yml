@@ -1,0 +1,7 @@
+# Local debug footing for `vendor/cordis/src/context.ts`. The console logger
+# mounts a real Loader-run entry; the relative `./probe.ts` mounts without any
+# resolver-manifest dependency (relative specifiers need none). Debug with the
+# "dsh: 调试 local-test cordis (src context.ts)" launch config.
+[]
+# - id: logger
+#   name: '@deepseek-ai/cordis-plugin-logger-console'

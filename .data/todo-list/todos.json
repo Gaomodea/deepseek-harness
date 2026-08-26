@@ -1,0 +1,27 @@
+{
+  "tasks": [
+    {
+      "id": "daily",
+      "name": "日常任务",
+      "builtin": true,
+      "lists": [
+        {
+          "id": "8bf8f2c3-a8a5-4c1c-8e3f-f7c83b342d2c",
+          "name": "cordis学习",
+          "items": [
+            {
+              "id": "f6127181-49e0-473a-a710-12383fb16e7a",
+              "done": true,
+              "text": "loader加载"
+            },
+            {
+              "id": "5f872432-b0f7-4090-9ebb-028fb1eb9f1b",
+              "done": true,
+              "text": "include加载"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "lib/types",
+    "lib": [
+      "ES2024",
+      "DOM",
+      "DOM.Iterable"
+    ],
+    "types": [
+      "node"
+    ],
+    "jsx": "react-jsx"
+  },
+  "include": [
+    "src"
+  ],
+  "references": [
+    {
+      "path": "../../../vendor/cordis"
+    },
+    {
+      "path": "../../settings/settings"
+    },
+    {
+      "path": "../../runtime-diagnostics/invariants"
+    },
+    {
+      "path": "../locale"
+    },
+    {
+      "path": "../runtime"
+    },
+    {
+      "path": "../ui-settings"
+    },
+    {
+      "path": "../ui-slots"
+    },
+    {
+      "path": "../../test-support/client-runtime"
+    }
+  ]
+}

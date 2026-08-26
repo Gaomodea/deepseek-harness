@@ -508,6 +508,7 @@ export async function mountRootInclude(
   // by name. Both builtins load through the ambient module pipeline, so neither
   // depends on the included tree's own specifier resolution.
   ctx.loader.builtins.group = Group
+  console.log('1')
   // Pinned id: the bootstrap include is app glue, not a config row, and its
   // id appears in Loader failure chains — a random id would make startup
   // diagnostics unstable across runs (and snapshot fixtures).
@@ -520,10 +521,13 @@ export async function mountRootInclude(
     name: 'cordis:include',
     config: includeConfig,
   }
+  console.log('4')
   const includeId = await ctx.loader.create(rootInclude)
+  console.log('2')
   const loader = ctx.get('loader')
   if (loader === undefined) return undefined
   const entry = loader.resolve(includeId)
+  console.log('3')
   bootstrapIncludes.set(ctx, entry)
   return entry
 }
@@ -769,9 +773,13 @@ export async function boot(
     ctx.baseUrl = pathToFileURL(dirname(absoluteConfigPath)).href + '/'
     ctx.provide('dshHomePath', dshHomePath)
     await ctx.plugin(Loader)
+    console.log('342342324234')
+
     await prepare?.(ctx)
     stage = 'plugin tree failed to load'
+    console.log('342342324234234234')
     await mountRootInclude(ctx, absoluteConfigPath, patches, bareModuleBaseUrl)
+    console.log('342342')
     // A surface can finish and dispose the whole tree while startup is still
     // in flight, before the last entry settles. The Loader service goes with
     // it, and the activation audit describes a live tree — reading `ctx.loader`

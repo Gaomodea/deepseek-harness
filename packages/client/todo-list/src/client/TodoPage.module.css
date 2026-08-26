@@ -1,0 +1,314 @@
+/* Todo settings page: task / list / item hierarchy with drag-to-reorder rows. */
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.title {
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.4;
+  margin: 0;
+  color: var(--dsw-alias-label-primary);
+}
+
+.desc {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--dsw-alias-label-tertiary);
+}
+
+.note {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--dsw-alias-label-tertiary);
+}
+
+.add {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.add .input {
+  flex: 1;
+  min-width: 0;
+}
+
+.input {
+  width: 100%;
+  box-sizing: border-box;
+  appearance: none;
+  border: 1px solid var(--dsw-alias-border-l2);
+  border-radius: 8px;
+  background: var(--dsw-alias-bg-base);
+  color: var(--dsw-alias-label-primary);
+  font: inherit;
+  font-size: 13px;
+  line-height: 1.5;
+  padding: 7px 10px;
+}
+
+.input::placeholder {
+  color: var(--dsw-alias-label-tertiary);
+}
+
+.input:focus-visible {
+  outline: 2px solid var(--dsw-alias-brand-primary);
+  outline-offset: 0;
+}
+
+.input:disabled {
+  opacity: 0.4;
+}
+
+.button {
+  appearance: none;
+  flex: none;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: 6px 14px;
+  font: inherit;
+  font-size: 13px;
+  line-height: 1.5;
+  cursor: pointer;
+  background: var(--dsw-alias-brand-primary);
+  color: var(--dsw-alias-bg-layer-3);
+}
+
+.button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--dsw-alias-brand-primary);
+  outline-offset: 1px;
+}
+
+.buttonGhost {
+  appearance: none;
+  border: 1px solid var(--dsw-alias-border-l2);
+  border-radius: 8px;
+  padding: 4px 12px;
+  font: inherit;
+  font-size: 12px;
+  line-height: 1.5;
+  cursor: pointer;
+  background: none;
+  color: var(--dsw-alias-label-secondary);
+}
+
+.buttonGhost:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.buttonGhost:hover:not(:disabled) {
+  color: var(--dsw-alias-label-primary);
+}
+
+.tasks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.taskCard, .listCard {
+  list-style: none;
+  border: 1px solid var(--dsw-alias-border-l2);
+  border-radius: 12px;
+  background: var(--dsw-alias-bg-layer-3);
+}
+
+.taskCard:hover, .listCard:hover {
+  border-color: var(--dsw-alias-label-dimmed);
+}
+
+.draggingOver {
+  border-color: var(--dsw-alias-brand-primary);
+  box-shadow: 0 0 0 1px var(--dsw-alias-brand-primary);
+}
+
+.rowHead {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 14px;
+}
+
+.number {
+  flex: none;
+  min-width: 22px;
+  text-align: center;
+  border-radius: 6px;
+  padding: 1px 6px;
+  background: var(--dsw-alias-bg-module-platform);
+  color: var(--dsw-alias-label-secondary);
+  font-size: 11px;
+  line-height: 18px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.rowName {
+  flex: 1;
+  min-width: 0;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--dsw-alias-label-primary);
+}
+
+.handle {
+  flex: none;
+  color: var(--dsw-alias-label-tertiary);
+  cursor: grab;
+  font-size: 13px;
+  letter-spacing: -1px;
+  user-select: none;
+  padding: 2px 4px;
+}
+
+.handle:active {
+  cursor: grabbing;
+}
+
+.deleteBtn {
+  flex: none;
+  appearance: none;
+  border: 0;
+  background: none;
+  color: var(--dsw-alias-label-tertiary);
+  font: inherit;
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 6px;
+}
+
+.deleteBtn:hover:not(:disabled) {
+  color: var(--dsw-alias-label-error);
+  background: var(--dsw-alias-interactive-bg-hover-danger);
+}
+
+.deleteBtn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.body {
+  border-top: 1px solid var(--dsw-alias-border-l2);
+  margin: 0 14px;
+  padding: 12px 0 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.lists {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 4px;
+  border-radius: 8px;
+}
+
+.item:hover {
+  background: var(--dsw-alias-interactive-bg-hover);
+}
+
+.itemLabel {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.check {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  flex: none;
+  border: 1px solid var(--dsw-alias-border-l2);
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 0;
+  position: relative;
+}
+
+.check:checked {
+  background: var(--dsw-alias-brand-primary);
+  border-color: var(--dsw-alias-brand-primary);
+}
+
+.check:checked::after {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 1px;
+  width: 4px;
+  height: 8px;
+  border: solid var(--dsw-alias-bg-layer-3);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.itemText {
+  flex: 1;
+  min-width: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--dsw-alias-label-primary);
+  word-break: break-word;
+}
+
+.doneText {
+  color: var(--dsw-alias-label-tertiary);
+  text-decoration: line-through;
+}
+
+.listActions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.empty {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--dsw-alias-label-tertiary);
+}
